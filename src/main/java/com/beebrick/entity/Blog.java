@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -21,9 +22,11 @@ public class Blog {
 	@Column(name = "BlogID")
 	private Integer blogID;
 	
+	@NotBlank(message = "Please enter title")
 	@Column(name = "Title")
 	private String title;
 	
+	@NotBlank(message = "Please enter content")
 	@Column(name = "Content", length = 7000)
 	private String content;
 	

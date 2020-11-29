@@ -9,7 +9,7 @@ import com.beebrick.entity.Role;
 
 public interface RoleService {
 	
-	List<Role> findAll();
+	List<Role> findAllRole();
 	
 	void save(Role role);
 	

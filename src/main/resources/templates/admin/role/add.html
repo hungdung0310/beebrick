@@ -22,7 +22,9 @@
 				<div class="card-body">
 					<div>
 			            <label th:text="RoleName" th:for="roleName"></label>
-			            <input type="text" th:field="*{roleName}" class="form-control"/>
+			            <input type="text" th:field="*{roleName}" class="form-control" id="RoleName"/>
+			            <span th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}" id="roleName" class="error"></span>
+						<span id="roleName" class="error"></span>
 			           	
 			        </div>
 			        <div style="clear: both; display: block; height: 10px"></div>
@@ -37,9 +39,11 @@
 		</div>
 	</div>
 	<script>
-		var editor = '';
-		$(document).ready(function() {
-			editor = CKEDITOR.replace('content');
+		$("#RoleName").on('input', function(){
+			var roleName = document.getElementById("RoleName").value;
+			if(roleName != ""){
+				document.getElementById("roleName").innerHTML = "";
+			}
 		});
 	</script>
 </body>

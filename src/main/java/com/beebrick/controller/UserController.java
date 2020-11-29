@@ -57,7 +57,7 @@ public class UserController {
 
 	@RequestMapping(value = "admin/user/add")
 	public String add(Model model) {
-		List<Role> roles = roleService.findAll();
+		List<Role> roles = roleService.findAllRole();
 		model.addAttribute("roles", roles);
 		model.addAttribute("user", new User());
 		return "admin/user/add";
@@ -82,7 +82,7 @@ public class UserController {
 
 	@RequestMapping(value = "admin/user/edit", method = RequestMethod.GET)
 	public String edit(@RequestParam("userID") Integer userID, Model model) {
-		List<Role> roles = roleService.findAll();
+		List<Role> roles = roleService.findAllRole();
 		model.addAttribute("roles", roles);
 		Optional<User> edit = userService.findById(userID);
 		edit.ifPresent(user -> model.addAttribute("user", user));

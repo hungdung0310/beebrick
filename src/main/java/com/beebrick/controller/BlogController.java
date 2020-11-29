@@ -69,7 +69,7 @@ public class BlogController {
 	@RequestMapping(value = "admin/blog/update", method = RequestMethod.POST)
 	public String update(@Valid Blog blog, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			return "admin/blog/add";
+			return "admin/blog/edit";
 		} else {
 			blogService.save(blog);
 			return "redirect:/admin/blog/page/1";
