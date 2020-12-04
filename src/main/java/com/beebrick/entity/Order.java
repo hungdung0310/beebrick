@@ -48,8 +48,8 @@ public class Order {
 	private String description;
 	
 	@ManyToOne
-	@JoinColumn(name = "UserID")
-	private User users;
+	@JoinColumn(name = "CustomerID")
+	private Customer customers;
 	
 	@ManyToOne
 	@JoinColumn(name = "PaymentID")
@@ -133,12 +133,12 @@ public class Order {
 		this.description = description;
 	}
 
-	public User getUsers() {
-		return users;
+	public Customer getCustomers() {
+		return customers;
 	}
 
-	public void setUsers(User users) {
-		this.users = users;
+	public void setCustomers(Customer customers) {
+		this.customers = customers;
 	}
 
 	public Payment getPayment() {

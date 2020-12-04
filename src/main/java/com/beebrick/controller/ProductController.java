@@ -11,12 +11,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,31 +37,19 @@ public class ProductController {
 	@Autowired
 	private ManufacturerService manufacturerService;
 
-	@GetMapping("admin/product/page/{pageNo}")
-	public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
-		int pageSize = 5;
-		
-		Page<Product> page = productService.findPaginated(pageNo, pageSize);
-		List<Product> products = page.getContent();
-
-		model.addAttribute("currentPage", pageNo);
-		model.addAttribute("totalPages", page.getTotalPages());
-		model.addAttribute("totalItems", page.getTotalElements());
+	@RequestMapping(value = "admin/product")
+	public String index(Model model) {
+		List<Product> products = productService.getAll();
 		model.addAttribute("products", products);
 		return "admin/product/index";
 	}
 
-	@RequestMapping("admin/product")
-	public String index(Model model) {
-		return "redirect:/admin/product/page/1";
-	}
-
 	@RequestMapping(value = "admin/product/add")
 	public String add(Model model) {
-		List<Category> categories = categoryService.findAll();
+		List<Category> categories = categoryService.getAll();
 		model.addAttribute("categories", categories);
 		
-		List<Manufacturer> manufacturers = manufacturerService.findAll();
+		List<Manufacturer> manufacturers = manufacturerService.getAll();
 		model.addAttribute("manufacturers", manufacturers);
 		
 		model.addAttribute("product", new Product());
@@ -72,7 +57,13 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value = "admin/product/save", method = RequestMethod.POST)
-	public String save(@Valid Product product, BindingResult bindingResult, @RequestParam("photo_file") MultipartFile photo) {
+	public String save(@Valid Product product, BindingResult bindingResult, @RequestParam("photo_file") MultipartFile photo, Model model) {
+		List<Category> categories = categoryService.getAll();
+		model.addAttribute("categories", categories);
+		
+		List<Manufacturer> manufacturers = manufacturerService.getAll();
+		model.addAttribute("manufacturers", manufacturers);
+		
 		if (bindingResult.hasErrors()) {
 			return "admin/product/add";
 		} else {
@@ -84,16 +75,16 @@ public class ProductController {
 			} catch (Exception e) {
 			}
 			productService.save(product);;
-			return "redirect:/admin/product/page/1";
+			return "redirect:/admin/product";
 		}
 	}
 
 	@RequestMapping(value = "admin/product/edit", method = RequestMethod.GET)
 	public String edit(@RequestParam("productID") Integer productID, Model model) {
-		List<Category> categories = categoryService.findAll();
+		List<Category> categories = categoryService.getAll();
 		model.addAttribute("categories", categories);
 		
-		List<Manufacturer> manufacturers = manufacturerService.findAll();
+		List<Manufacturer> manufacturers = manufacturerService.getAll();
 		model.addAttribute("manufacturers", manufacturers);
 		
 		Optional<Product> edit = productService.findById(productID);
@@ -102,7 +93,12 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "admin/product/update", method = RequestMethod.POST)
-	public String update(@Valid Product product, BindingResult bindingResult, @RequestParam("photo_file") MultipartFile photo) {
+	public String update(@Valid Product product, BindingResult bindingResult, @RequestParam("photo_file") MultipartFile photo, Model model) {
+		List<Category> categories = categoryService.getAll();
+		model.addAttribute("categories", categories);
+		
+		List<Manufacturer> manufacturers = manufacturerService.getAll();
+		model.addAttribute("manufacturers", manufacturers);
 		if (bindingResult.hasErrors()) {
 			return "admin/product/add";
 		} else {
@@ -114,13 +110,13 @@ public class ProductController {
 			} catch (Exception e) {
 			}
 			productService.save(product);;
-			return "redirect:/admin/product/page/1";
+			return "redirect:/admin/product";
 		}
 	}
 
 	@RequestMapping(value = "admin/product/delete", method = RequestMethod.GET)
 	public String delete(@RequestParam("productID") Integer productID, Model model) {
 		productService.delete(productID);
-		return "redirect:/admin/product/page/1";
+		return "redirect:/admin/product";
 	}
 }

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.beebrick.entity.Manufacturer;
@@ -19,8 +17,8 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	private ManufacturerRepository manufacturerRepository;
 
 	@Override
-	public List<Manufacturer> findAll() {
-		return manufacturerRepository.findAll();
+	public List<Manufacturer> getAll() {
+		return manufacturerRepository.getAll();
 	}
 
 	@Override
@@ -30,7 +28,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
 	@Override
 	public void delete(Integer manufacturerID) {
-		manufacturerRepository.delete(manufacturerID);
+		manufacturerRepository.delete(manufacturerID);	
 	}
 
 	@Override
@@ -39,10 +37,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	}
 
 	@Override
-	public Page<Manufacturer> findPaginated(int pageNo, int pageSize) {
-		PageRequest pageable = PageRequest.of(pageNo - 1, pageSize);
-		return manufacturerRepository.getAllManufacturer(pageable);
+	public List<Manufacturer> findByName(String manufacturerName) {
+		return manufacturerRepository.findByName(manufacturerName);
 	}
-
-	
 }

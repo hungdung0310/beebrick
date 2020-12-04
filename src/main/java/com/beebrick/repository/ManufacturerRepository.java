@@ -1,7 +1,7 @@
 package com.beebrick.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,11 +13,14 @@ import com.beebrick.entity.Manufacturer;
 @Repository
 public interface ManufacturerRepository extends JpaRepository<Manufacturer, Integer>{
 	
-	@Query(value = "SELECT * FROM manufacturer WHERE IsActive = 0", nativeQuery = true)
-	public Page<Manufacturer> getAllManufacturer(Pageable pageable);
+	@Query(value = "SELECT * FROM manufactures WHERE IsActive = 0", nativeQuery = true)
+	public List<Manufacturer> getAll();
 	
 	@Modifying
 	@Transactional
-	@Query(value = "UPDATE manufacturer SET IsActive = 1 WHERE ManufacturerID=?1", nativeQuery = true)
+	@Query(value = "UPDATE manufactures SET IsActive = 1 WHERE ManufacturerID=?1", nativeQuery = true)
 	void delete(Integer manufacturerID);
+	
+	@Query(value = "SELECT * FROM manufactures WHERE ManufacturerName = ?1", nativeQuery = true)
+	public List<Manufacturer> findByName(String manufacturerName);
 }

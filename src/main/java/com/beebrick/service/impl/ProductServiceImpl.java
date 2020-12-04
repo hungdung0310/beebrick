@@ -1,10 +1,9 @@
 package com.beebrick.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.beebrick.entity.Product;
@@ -16,6 +15,11 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	private ProductRepository productRepository;
+
+	@Override
+	public List<Product> getAll() {
+		return productRepository.getAll();
+	}
 
 	@Override
 	public void save(Product product) {
@@ -32,9 +36,5 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.findById(productID);
 	}
 
-	@Override
-	public Page<Product> findPaginated(int pageNo, int pageSize) {
-		PageRequest pageable = PageRequest.of(pageNo - 1, pageSize);
-		return productRepository.getAllProduct(pageable);
-	}
+	
 }

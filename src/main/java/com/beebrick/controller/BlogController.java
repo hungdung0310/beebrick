@@ -6,12 +6,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,23 +21,11 @@ public class BlogController {
 	@Autowired
 	private BlogService blogService;
 
-	@GetMapping("admin/blog/page/{pageNo}")
-	public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
-		int pageSize = 5;
-		
-		Page<Blog> page = blogService.findPaginated(pageNo, pageSize);
-		List<Blog> blogs = page.getContent();
-
-		model.addAttribute("currentPage", pageNo);
-		model.addAttribute("totalPages", page.getTotalPages());
-		model.addAttribute("totalItems", page.getTotalElements());
+	@RequestMapping(value = "admin/blog")
+	public String index(Model model) {
+		List<Blog> blogs = blogService.getAll();
 		model.addAttribute("blogs", blogs);
 		return "admin/blog/index";
-	}
-
-	@RequestMapping("admin/blog")
-	public String index(Model model) {
-		return "redirect:/admin/blog/page/1";
 	}
 
 	@RequestMapping(value = "admin/blog/add")
@@ -55,7 +40,7 @@ public class BlogController {
 			return "admin/blog/add";
 		} else {
 			blogService.save(blog);
-			return "redirect:/admin/blog/page/1";
+			return "redirect:/admin/blog";
 		}
 	}
 
@@ -72,13 +57,13 @@ public class BlogController {
 			return "admin/blog/edit";
 		} else {
 			blogService.save(blog);
-			return "redirect:/admin/blog/page/1";
+			return "redirect:/admin/blog";
 		}
 	}
 
 	@RequestMapping(value = "admin/blog/delete", method = RequestMethod.GET)
 	public String delete(@RequestParam("blogID") Integer blogID, Model model) {
 		blogService.delete(blogID);
-		return "redirect:/admin/blog/page/1";
+		return "redirect:/admin/blog";
 	}
 }

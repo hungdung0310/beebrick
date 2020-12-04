@@ -12,12 +12,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class Product {
 	
 	@Id
@@ -28,17 +31,21 @@ public class Product {
 	@Column(name = "ProductCode")
 	private String productCode;
 	
+	@NotBlank(message = "Please enter product name")
 	@Column(name = "ProductName")
 	private String productName;
 	
 	@Column(name = "Image")
 	private String image;
 	
+	@DecimalMin("0.1")
+//	@NotNull(message = "Please enter price")
 	@Column(name = "Price")
 	private double price;
 	
-	@Column(name = "Quantity")
-	private Integer quantity;
+	@NotNull(message = "Please enter quantity in stock")
+	@Column(name = "QuantityInStock")
+	private Integer quantityInStock;
 	
 	@Column(name = "Description")
 	private String description;
@@ -114,12 +121,12 @@ public class Product {
 		this.price = price;
 	}
 
-	public Integer getQuantity() {
-		return quantity;
+	public Integer getQuantityInStock() {
+		return quantityInStock;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setQuantityInStock(Integer quantityInStock) {
+		this.quantityInStock = quantityInStock;
 	}
 
 	public String getDescription() {

@@ -9,7 +9,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "orderDetail")
+@Table(name = "orderdetails")
 public class OrderDetail {
 	
 	@EmbeddedId

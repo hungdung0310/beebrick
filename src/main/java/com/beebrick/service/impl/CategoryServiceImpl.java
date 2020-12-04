@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.beebrick.entity.Category;
@@ -19,8 +17,8 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryRepository categoryRepository;
 
 	@Override
-	public List<Category> findAll() {
-		return categoryRepository.findAll();
+	public List<Category> getAll() {
+		return categoryRepository.getAll();
 	}
 
 	@Override
@@ -39,9 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public Page<Category> findPaginated(int pageNo, int pageSize) {
-		PageRequest pageable = PageRequest.of(pageNo - 1, pageSize);
-		return categoryRepository.getAllCategory(pageable);
+	public List<Category> findByName(String categoryName) {
+		return categoryRepository.findByName(categoryName);
 	}
-
 }
